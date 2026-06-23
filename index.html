@@ -4,1531 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Auvir Lab</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
-<style>
-  @font-face {
-    font-family: 'NASALIZATION';
-    src: url('assets/fonts/Nasalization Rg.otf') format('opentype');
-    font-weight: 400;
-    font-style: normal;
-    font-display: swap;
-  }
-</style>
-<style>
-  html { overflow-x: hidden; }
-
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --bg: #1a1a1a;
-    --bg2: #222;
-    --bg3: #2a2a2a;
-    --accent: #367a85;
-    --accent2: #4aa3b3;
-    --glow: rgba(54,122,133,0.18);
-    --glow2: rgba(74,163,179,0.12);
-    --text: #fefefe;
-    --muted: #9aa8b8;
-    --border: rgba(54,122,133,0.15);
-    --card: rgba(26,26,26,0.7);
-  }
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    font-size: 16px;
-    line-height: 1.7;
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3, h4 {
-    font-family: 'Space Grotesk', sans-serif;
-    line-height: 1.15;
-  }
-
-  ::-webkit-scrollbar { width: 4px; }
-  ::-webkit-scrollbar-track { background: var(--bg); }
-  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
-
-  /* ===== SCROLL REVEAL ANIMATIONS ===== */
-
-  /* Base state: hidden (before entering viewport) */
-  .reveal {
-    opacity: 0;
-    transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
-                transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
-    will-change: opacity, transform;
-  }
-
-  /* Visible state */
-  .reveal.visible {
-    opacity: 1;
-    transform: none !important;
-  }
-
-  /* Direction variants */
-  .reveal-up    { transform: translateY(48px); }
-  .reveal-down  { transform: translateY(-32px); }
-  .reveal-left  { transform: translateX(-56px); }
-  .reveal-right { transform: translateX(56px); }
-  .reveal-scale { transform: scale(0.88); }
-  .reveal-fade  { transform: none; }
-
-  /* Stagger delays */
-  .reveal-d1 { transition-delay: 0.05s; }
-  .reveal-d2 { transition-delay: 0.12s; }
-  .reveal-d3 { transition-delay: 0.19s; }
-  .reveal-d4 { transition-delay: 0.26s; }
-  .reveal-d5 { transition-delay: 0.33s; }
-  .reveal-d6 { transition-delay: 0.40s; }
-
-  /* Respect prefers-reduced-motion */
-  @media (prefers-reduced-motion: reduce) {
-    .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
-  }
-
-  /* Scroll animations */
-
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.1rem 5vw;
-    background: rgba(26,26,26,0.7);
-    backdrop-filter: blur(18px);
-    border-bottom: 0.5px solid var(--border);
-  }
-
-  .nav-logo {
-    display: flex; align-items: center; gap: 6px;
-    text-decoration: none; z-index: 100;
-  }
-
-  .nav-logo img {
-    height: 26px; width: auto;
-    display: block; mix-blend-mode: screen;
-  }
-
-  .nav-logo-dot {
-    width: 8px; height: 8px; border-radius: 50%;
-    background: var(--accent2);
-    box-shadow: 0 0 12px var(--accent2);
-    animation: pulse 2s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.5; transform: scale(0.8); }
-  }
-
-  .nav-links {
-    display: flex; align-items: center; gap: 2.2rem; list-style: none;
-  }
-
-  .nav-cta-wrap {
-    margin-left: auto;
-  }
-
-  .nav-links a {
-    color: var(--muted); text-decoration: none;
-    font-size: 0.88rem; font-weight: 400; letter-spacing: 0.02em;
-    transition: color 0.2s;
-  }
-
-  .nav-links a:hover { color: var(--text); }
-
-  .nav-links .nav-cta {
-    border: 0.5px solid var(--accent);
-    color: var(--accent); text-decoration: none;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.85rem; font-weight: 600;
-    padding: 0.5rem 1.3rem;
-    border-radius: 100px;
-    transition: all 0.25s;
-    background: transparent;
-    display: inline-flex; align-items: center;
-  }
-
-  .nav-links .nav-cta:hover { background: var(--accent); color: #fff; }
-
-  .hamburger {
-    display: none; flex-direction: column; gap: 5px;
-    cursor: pointer; padding: 4px;
-  }
-  .hamburger span {
-    width: 22px; height: 1.5px;
-    background: var(--text); border-radius: 2px;
-    transition: all 0.3s;
-  }
-
-  #hero {
-    min-height: 100vh;
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    text-align: center;
-    padding: 7rem 5vw 5rem;
-    position: relative; overflow: hidden;
-  }
-
-  #sobre::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(ellipse 50% 40% at 80% 20%, rgba(54,122,133,0.06), transparent);
-    pointer-events: none;
-  }
-
-  #trayectoria::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(ellipse 60% 50% at 20% 50%, rgba(42,90,101,0.05), transparent);
-    pointer-events: none;
-  }
-
-  #servicios::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(ellipse 70% 40% at 50% 100%, rgba(54,122,133,0.06), transparent);
-    pointer-events: none;
-  }
-
-  #herramientas::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(ellipse 40% 60% at 70% 30%, rgba(74,163,179,0.05), transparent);
-    pointer-events: none;
-  }
-
-  #ubicacion::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(42,90,101,0.04), transparent);
-    pointer-events: none;
-  }
-
-  #contacto::before {
-    content: ''; position: absolute; inset: 0; z-index: -1;
-    background: radial-gradient(ellipse 50% 40% at 30% 80%, rgba(54,122,133,0.05), transparent);
-    pointer-events: none;
-  }
-
-  .hero-bg {
-    position: absolute; inset: 0; pointer-events: none;
-    background: linear-gradient(135deg, #0a0a0a 0%, #0d2a2e 30%, #0a0a0a 60%, #0d1f2e 80%, #0a0a0a 100%);
-    background-size: 600% 600%;
-    animation: gradientShift 18s ease infinite;
-  }
-  #hero-particles {
-    position: absolute; inset: 0;
-    width: 100%; height: 100%;
-    pointer-events: none;
-    display: block;
-  }
-  @keyframes gradientShift {
-    0% { background-position: 0% 50% }
-    50% { background-position: 100% 50% }
-    100% { background-position: 0% 50% }
-  }
-
-  .hero-badge {
-    display: inline-flex; align-items: center; gap: 8px;
-    border: 0.5px solid var(--border);
-    background: rgba(54,122,133,0.07);
-    padding: 0.4rem 1rem; border-radius: 100px;
-    font-size: 0.78rem; color: var(--accent2);
-    letter-spacing: 0.08em; text-transform: uppercase;
-    font-weight: 500;
-    margin-bottom: 2rem;
-    position: relative; z-index: 2;
-  }
-
-  .font-nasal {
-    font-family: 'NASALIZATION', 'Space Grotesk', sans-serif;
-    letter-spacing: 0.06em;
-    font-weight: 400;
-  }
-
-  .hero-title {
-    font-size: clamp(3.5rem, 9vw, 7.5rem);
-    font-weight: 800;
-    letter-spacing: 0.08em;
-    position: relative; z-index: 2;
-    margin-bottom: 0.3rem;
-    color: var(--text);
-  }
-
-  .hero-title span {
-    color: var(--accent);
-  }
-
-  .hero-sub {
-    font-size: clamp(1.1rem, 3vw, 1.6rem);
-    color: var(--text);
-    margin: 0 auto 2.5rem;
-    position: relative; z-index: 2;
-    font-weight: 400;
-    white-space: nowrap;
-  }
-
-  .hero-sub strong {
-    color: var(--accent2); font-weight: 500;
-  }
-
-  .hero-actions {
-    display: flex; gap: 1rem; flex-wrap: wrap;
-    justify-content: center;
-    position: relative; z-index: 2;
-  }
-
-  .btn-primary {
-    border: 0.5px solid var(--accent);
-    color: var(--accent); text-decoration: none;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem; font-weight: 600;
-    padding: 0.85rem 2rem; border-radius: 100px;
-    transition: all 0.25s;
-    background: transparent;
-    display: inline-flex; align-items: center; gap: 8px;
-  }
-
-  .btn-primary:hover {
-    background: var(--accent);
-    color: #fff;
-    border-color: var(--accent);
-  }
-
-  .btn-arrow {
-    animation: arrow-bounce 1.6s ease-in-out infinite;
-  }
-
-  @keyframes arrow-bounce {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(4px); }
-  }
-
-  .btn-ghost {
-    border: 0.5px solid var(--border);
-    color: var(--muted); text-decoration: none;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem; font-weight: 600;
-    padding: 0.85rem 2rem; border-radius: 100px;
-    transition: all 0.25s;
-    background: transparent;
-  }
-
-  .btn-ghost:hover {
-    border-color: var(--muted);
-    color: var(--text);
-  }
-
-
-  section {
-    padding: 7rem 5vw;
-    position: relative;
-  }
-
-  .section-label {
-    display: inline-flex; align-items: center; gap: 10px;
-    color: var(--accent); font-size: 0.78rem;
-    letter-spacing: 0.1em; text-transform: uppercase;
-    font-weight: 600; margin-bottom: 1.2rem;
-  }
-
-  .section-label::before, .section-label::after {
-    content: ''; flex: 1; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--accent));
-    width: 24px;
-  }
-
-  .section-label::after {
-    background: linear-gradient(270deg, transparent, var(--accent));
-  }
-
-  .section-title {
-    font-size: clamp(2rem, 4vw, 3.2rem);
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    margin-bottom: 1rem;
-  }
-
-  .section-desc {
-    color: var(--muted);
-    max-width: 540px;
-    font-weight: 300;
-    font-size: 1.05rem;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .text-accent {
-    color: var(--accent);
-  }
-
-  #sobre {
-    background: linear-gradient(180deg, var(--bg) 0%, var(--bg2) 100%);
-  }
-
-  .sobre-bottom-grid {
-    max-width: 1100px;
-    margin: 3rem auto 0;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 2rem;
-    align-items: start;
-  }
-
-  .flip-card {
-    perspective: 1000px;
-    height: 230px;
-    cursor: pointer;
-  }
-
-  .flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    transition: transform 0.6s;
-    transform-style: preserve-3d;
-  }
-
-  .flip-card.flipped .flip-card-inner {
-    transform: rotateY(180deg);
-  }
-
-  .flip-front, .flip-back {
-    position: absolute;
-    inset: 0;
-    backface-visibility: hidden;
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-    text-align: center;
-    background: var(--card);
-  }
-
-  .flip-back {
-    transform: rotateY(180deg);
-    text-align: left;
-    padding: 1.2rem;
-    overflow-y: auto;
-  }
-
-  .flip-front-icon {
-    width: 36px; height: 36px;
-    color: var(--accent);
-  }
-
-  .flip-front-label {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-top: 0.75rem;
-  }
-
-  .flip-hint {
-    font-size: 0.65rem;
-    color: var(--muted);
-    margin-top: 0.6rem;
-    opacity: 0.5;
-  }
-
-  .flip-back-label {
-    font-size: 0.6rem;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    margin-bottom: 0.5rem;
-    display: inline-block;
-    border: 0.5px solid var(--border);
-    background: rgba(54,122,133,0.07);
-    padding: 0.15rem 0.5rem;
-    border-radius: 100px;
-  }
-
-  .flip-back-text {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.45;
-    line-height: 1.7;
-  }
-
-  .obj-mwrap {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
-  .obj-mviewport {
-    height: 230px;
-    overflow: hidden;
-    position: relative;
-    border-radius: 14px;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .obj-mtrack {
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .obj-mcard {
-    height: 230px;
-    min-width: 0;
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem 1.5rem;
-    background: var(--card);
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    box-sizing: border-box;
-  }
-
-  .obj-mcard-num {
-    font-size: 0.7rem;
-    font-weight: 700;
-    color: var(--accent);
-    letter-spacing: 0.12em;
-    margin-bottom: 0.6rem;
-    display: inline-block;
-    border: 0.5px solid var(--border);
-    background: rgba(54,122,133,0.07);
-    padding: 0.2rem 0.7rem;
-    border-radius: 100px;
-    width: fit-content;
-  }
-
-  .obj-mcard-title {
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 0.35rem;
-  }
-
-  .obj-mcard-desc {
-    font-size: 0.75rem;
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.5;
-  }
-
-  .obj-dots {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .obj-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--border);
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-
-  .obj-dot.active {
-    background: var(--accent);
-  }
-
-  .obj-card-hint {
-    font-size: 0.65rem;
-    color: var(--muted);
-    margin-top: 0.5rem;
-    opacity: 0.5;
-  }
-
-  .sobre-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5rem;
-    align-items: center;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .sobre-visual { position: relative; }
-
-  .sobre-frame {
-    aspect-ratio: 4/3;
-    border-radius: 16px;
-    border: 0.5px solid var(--border);
-    background: var(--card);
-    display: flex; align-items: center; justify-content: center;
-    overflow: hidden;
-    position: relative;
-  }
-
-  .carousel {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px;
-  }
-
-  .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease;
-  }
-
-  .carousel-slide {
-    min-width: 100%;
-  }
-
-  .carousel-slide .sobre-frame {
-    border-radius: 0;
-    border: none;
-  }
-
-  .carousel-btn {
-    position: absolute;
-    top: 50%; transform: translateY(-50%);
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 0.5px solid var(--border);
-    background: rgba(26,26,26,0.7);
-    color: var(--text);
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-    z-index: 2;
-  }
-
-  .carousel-btn:hover { background: rgba(26,26,26,0.95); }
-
-  .carousel-prev { left: 12px; }
-  .carousel-next { right: 12px; }
-
-  .carousel-dots {
-    position: absolute;
-    bottom: 12px; left: 50%; transform: translateX(-50%);
-    display: flex; gap: 6px;
-  }
-
-  .carousel-dot {
-    width: 8px; height: 8px;
-    border-radius: 50%;
-    border: 0.5px solid var(--border);
-    background: transparent;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .carousel-dot.active { background: var(--accent); border-color: var(--accent); }
-
-  .vr-illustration {
-    width: 100%; height: 100%;
-    display: flex; align-items: center; justify-content: center;
-    position: relative;
-  }
-
-  .vr-ring {
-    position: absolute;
-    border-radius: 50%;
-    border: 1px solid rgba(54,122,133,0.2);
-    animation: spin-ring linear infinite;
-  }
-
-  .vr-ring:nth-child(1) { width: 200px; height: 200px; animation-duration: 20s; }
-  .vr-ring:nth-child(2) { width: 280px; height: 280px; animation-duration: 28s; animation-direction: reverse; border-color: rgba(74,163,179,0.15); }
-  .vr-ring:nth-child(3) { width: 360px; height: 360px; animation-duration: 35s; border-color: rgba(42,90,101,0.12); }
-
-  @keyframes spin-ring {
-    from { transform: rotate(0deg) rotateX(60deg); }
-    to { transform: rotate(360deg) rotateX(60deg); }
-  }
-
-  .vr-core {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: radial-gradient(circle, var(--accent2) 0%, var(--accent) 60%, transparent 100%);
-    box-shadow: 0 0 40px rgba(54,122,133,0.5);
-    z-index: 2;
-    position: relative;
-  }
-
-  .sobre-text { padding: 1rem 0; }
-  .sobre-text .section-desc { text-align: left; margin: 0; }
-
-  .sobre-stats {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 1.5rem; margin-top: 2.5rem;
-  }
-
-  .stat-item {
-    text-align: center;
-    padding: 1.2rem;
-    border: 0.5px solid var(--border);
-    border-radius: 12px;
-    background: var(--card);
-  }
-
-  .stat-num {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.8rem; font-weight: 800;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    display: block; line-height: 1;
-  }
-
-  .stat-label {
-    font-size: 0.78rem; color: var(--muted);
-    letter-spacing: 0.05em; margin-top: 4px;
-    display: block;
-  }
-
-  #trayectoria {
-    background: var(--bg);
-  }
-
-  .recorrido-header {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 4rem;
-  }
-
-  .tabs {
-    display: flex;
-    justify-content: center;
-    gap: 0.5rem;
-    margin-bottom: 3rem;
-    flex-wrap: wrap;
-  }
-
-  .tab-btn {
-    border: 0.5px solid var(--border);
-    background: transparent;
-    color: var(--muted);
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.6rem 1.5rem;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.25s;
-  }
-
-  .tab-btn:hover {
-    border-color: var(--accent);
-    color: var(--text);
-  }
-
-  .tab-btn.active {
-    background: var(--accent);
-    border-color: var(--accent);
-    color: #fff;
-  }
-
-  .tab-content {
-    display: none;
-  }
-
-  .tab-content.active {
-    display: block;
-  }
-
-  .recorrido-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.2rem;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .rec-card {
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    background: var(--card);
-    overflow: hidden;
-    transition: border-color 0.3s, transform 0.3s;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .rec-card:hover {
-    border-color: rgba(54,122,133,0.35);
-    transform: translateY(-3px);
-  }
-
-  .rec-card-featured {
-    grid-column: 1 / -1;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    border-color: rgba(54,122,133,0.25);
-    position: relative;
-  }
-
-  .rec-card-featured:hover {
-    border-color: var(--accent);
-  }
-
-  .rec-card-featured .rec-card-img {
-    aspect-ratio: 16/10;
-  }
-
-  .rec-card-featured .rec-card-title {
-    padding: 0;
-    font-size: 1.25rem;
-  }
-
-  .rec-card-featured .rec-card-info {
-    display: flex; flex-direction: column;
-    padding: 1.5rem;
-  }
-  .rec-card-featured .rec-card-info-main {
-    flex: 1;
-    display: flex; flex-direction: column;
-    justify-content: center;
-    gap: 0.5rem;
-  }
-  .rec-card-featured .rec-card-info .rec-card-hint {
-    margin-top: 0;
-    padding: 0.75rem 0 0;
-  }
-  .rec-card-featured .rec-card-desc {
-    padding: 0;
-    margin-bottom: 0;
-  }
-  .rec-card-featured .rec-card-badge {
-    margin: 0;
-  }
-
-  .rec-card-desc {
-    font-size: 0.8rem;
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.5;
-    padding: 0 1.5rem;
-    margin-bottom: 0.75rem;
-  }
-
-  .rec-card-badge {
-    display: inline-block;
-    padding: 0.15rem 0.6rem;
-    border-radius: 100px;
-    font-size: 0.55rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 600;
-    background: rgba(54,122,133,0.12);
-    color: var(--accent2);
-    border: 0.5px solid rgba(54,122,133,0.2);
-    margin: 0 1.5rem;
-    align-self: flex-start;
-  }
-
-  .rec-card-hint {
-    font-size: 0.6rem;
-    color: var(--muted);
-    opacity: 0.4;
-    margin-top: auto;
-    padding: 0.5rem 1.2rem 0.75rem;
-  }
-
-  .rec-card-img {
-    aspect-ratio: 16/10;
-    background: var(--bg3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--muted);
-    font-size: 0.8rem;
-    opacity: 0.5;
-    flex-shrink: 0;
-  }
-
-  .rec-card-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-    padding: 1rem 1.2rem;
-    line-height: 1.3;
-  }
-
-  .rec-card {
-    cursor: pointer;
-  }
-
-  /* MODAL */
-  .modal-overlay {
-    position: fixed; inset: 0; z-index: 300;
-    background: rgba(0,0,0,0.7);
-    backdrop-filter: blur(6px);
-    display: flex; align-items: center; justify-content: center;
-    padding: 2rem;
-    opacity: 0; pointer-events: none;
-    transition: opacity 0.3s;
-  }
-
-  .modal-overlay.open {
-    opacity: 1; pointer-events: auto;
-  }
-
-  .modal {
-    background: var(--bg2);
-    border: 0.5px solid var(--border);
-    border-radius: 18px;
-    max-width: 520px;
-    width: 100%;
-    overflow: hidden;
-    transform: scale(0.95);
-    transition: transform 0.3s;
-  }
-
-  .modal-overlay.open .modal {
-    transform: scale(1);
-  }
-
-  .modal-img {
-    aspect-ratio: 16/9;
-    background: var(--bg3);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--muted); font-size: 0.85rem; opacity: 0.5;
-    overflow: hidden;
-  }
-  .modal-img-track {
-    display: flex;
-    transition: transform 0.5s ease;
-    width: 100%;
-  }
-  .modal-img-slide {
-    min-width: 100%;
-  }
-  .modal-img-slide img {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .modal-gallery {
-    position: relative;
-  }
-
-  .modal-gallery-btn {
-    position: absolute; top: 50%; transform: translateY(-50%);
-    z-index: 2;
-    background: rgba(0,0,0,0.5);
-    border: 0.5px solid rgba(255,255,255,0.15);
-    color: #fff;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    opacity: 0; transition: opacity 0.25s;
-  }
-
-  .modal-gallery:hover .modal-gallery-btn {
-    opacity: 1;
-  }
-
-  .modal-gallery-btn:hover {
-    background: rgba(0,0,0,0.75);
-  }
-
-  .modal-gallery-prev {
-    left: 0.75rem;
-  }
-
-  .modal-gallery-next {
-    right: 0.75rem;
-  }
-
-  .modal-counter {
-    position: absolute; bottom: 0.75rem; right: 0.75rem;
-    background: rgba(0,0,0,0.55);
-    color: #fff;
-    font-size: 0.75rem;
-    padding: 0.2rem 0.6rem;
-    border-radius: 100px;
-    z-index: 2;
-  }
-
-  .modal-body {
-    padding: 1.5rem 1.8rem 2rem;
-  }
-
-  .modal-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 0.8rem;
-  }
-
-  .modal-desc {
-    color: var(--muted);
-    font-size: 0.92rem;
-    font-weight: 300;
-    line-height: 1.7;
-  }
-
-  .modal-close {
-    position: fixed; top: 20px; right: 24px;
-    z-index: 301;
-    width: 36px; height: 36px;
-    border-radius: 50%;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(0,0,0,0.5);
-    color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    cursor: pointer;
-    transition: background 0.2s;
-  }
-
-  .modal-close:hover { background: rgba(255,255,255,0.22); }
-
-  #servicios {
-    background: var(--bg2);
-  }
-
-  .servicios-header {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 4rem;
-  }
-
-  .servicios-marquee {
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .servicios-marquee + .servicios-marquee {
-    margin-top: 3rem;
-  }
-
-  .servicios-sub-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.3rem;
-    font-weight: 700;
-    margin-bottom: 1.2rem;
-  }
-
-  .marquee-wrap {
-    overflow: hidden;
-    padding: 4px 0;
-    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
-    cursor: grab;
-    user-select: none;
-  }
-
-  .marquee-track {
-    display: flex;
-    gap: 1.2rem;
-    width: max-content;
-  }
-
-  .marquee-group {
-    display: flex;
-    gap: 1.2rem;
-    flex-shrink: 0;
-  }
-
-  .marquee-group .servicio-card {
-    width: 250px;
-    flex-shrink: 0;
-  }
-
-  .servicio-card {
-    background: var(--card);
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    padding: 1.5rem 1.3rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .servicio-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
-  }
-
-  .servicio-card-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    background: rgba(54,122,133,0.1);
-    color: var(--accent2);
-    flex-shrink: 0;
-    margin-bottom: 0.2rem;
-  }
-
-  .servicio-card-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 700;
-  }
-
-  .servicio-card-desc {
-    font-size: 0.78rem;
-    color: var(--muted);
-    font-weight: 300;
-    line-height: 1.5;
-  }
-
-  .servicio-card-price {
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--accent2);
-    margin-top: auto;
-    padding-top: 0.4rem;
-    border-top: 0.5px solid var(--border);
-    text-align: center;
-  }
-
-  #contacto {
-    background: var(--bg2);
-  }
-
-  .contacto-wrap {
-    max-width: 1000px;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .contacto-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 2rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    margin: 0 0 1rem;
-  }
-
-  .contacto-info {
-    display: flex;
-    gap: 1.2rem;
-    margin-top: 2.5rem;
-    justify-content: center;
-  }
-
-  .contacto-card {
-    flex: 1;
-    max-width: 320px;
-    padding: 1.8rem 1.5rem;
-    background: var(--card);
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    text-decoration: none;
-    color: var(--text);
-    display: flex; flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .contacto-card:hover {
-    border-color: rgba(54,122,133,0.35);
-    transform: translateY(-3px);
-  }
-
-  .contacto-card-icon {
-    width: 48px; height: 48px;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 0.3rem;
-  }
-
-  .contacto-card-label {
-    font-size: 0.8rem;
-    font-weight: 300;
-    color: var(--muted);
-  }
-
-  .contacto-card-value {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  /* =============================================
-     RESPONSIVE — TABLET  ≤ 900px
-     ============================================= */
-  @media (max-width: 900px) {
-
-    /* --- Nav --- */
-    .nav-links { display: none; }
-    .hamburger { display: flex; }
-    .nav-links.open {
-      display: flex;
-      flex-direction: column;
-      position: fixed;
-      top: 58px; left: 0; right: 0;
-      background: rgba(20,20,20,0.98);
-      backdrop-filter: blur(20px);
-      padding: 1.8rem 6vw 2.2rem;
-      gap: 1.4rem;
-      border-bottom: 0.5px solid var(--border);
-      z-index: 99;
-    }
-    .nav-links.open li { width: 100%; }
-    .nav-links.open a { font-size: 1rem; color: var(--text); display: block; }
-    /* Preserve accent color for CTA — must come after rule above */
-    .nav-links.open .nav-cta {
-      display: inline-flex;
-      margin-top: 0.4rem;
-      font-size: 0.9rem;
-      color: var(--accent) !important;
-      border-color: var(--accent);
-    }
-    .nav-links.open .nav-cta:hover { color: #fff !important; }
-    .nav-cta-wrap { margin-left: 0; }
-
-    /* --- Hero --- */
-    .hero-sub { white-space: normal; }
-
-    /* --- Global spacing --- */
-    section { padding: 5rem 5vw; }
-
-    /* --- Sobre --- */
-    .sobre-grid {
-      grid-template-columns: 1fr;
-      gap: 2.5rem;
-    }
-    .sobre-text { padding: 0; }
-    .sobre-text .section-desc { text-align: center; margin: 0 auto; }
-    .sobre-text .section-title,
-    .sobre-text .section-label { text-align: center; display: flex; justify-content: center; }
-    .sobre-stats { grid-template-columns: repeat(3, 1fr); gap: 1rem; }
-    .sobre-bottom-grid {
-      grid-template-columns: 1fr;
-      gap: 1.2rem;
-      margin-top: 2.5rem;
-    }
-    .sobre-bottom-grid .flip-card { height: 280px; }
-    .sobre-bottom-grid .obj-mviewport { height: 280px; }
-    .sobre-bottom-grid .obj-mcard { height: 280px; }
-
-    /* --- Trayectoria --- */
-    .tab-btn { font-size: 0.82rem; padding: 0.5rem 1.2rem; }
-    .recorrido-grid { grid-template-columns: 1fr; gap: 1rem; }
-    .rec-card-featured { grid-template-columns: 1fr; }
-
-    /* --- Herramientas --- */
-    .herramientas-grid { grid-template-columns: repeat(4, 1fr); }
-
-    /* --- Contacto --- */
-    .contacto-info {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 1rem;
-    }
-    .contacto-card { max-width: 100%; width: 100%; height: 280px; justify-content: center; padding: 1.5rem; }
-    .contacto-card-icon { flex-shrink: 0; margin-bottom: 0.3rem; }
-    .contacto-card-value { word-break: break-word; }
-
-    /* --- Footer --- */
-    .footer-inner { flex-direction: column; gap: 0.3rem; }
-  }
-
-  /* =============================================
-     RESPONSIVE — MOBILE  ≤ 600px
-     ============================================= */
-  @media (max-width: 600px) {
-
-    /* --- Global --- */
-    section { padding: 4rem 5vw; }
-    .section-label { font-size: 0.72rem; letter-spacing: 0.07em; }
-    .section-title { font-size: clamp(1.75rem, 6.5vw, 2.2rem); }
-    .section-desc { font-size: 0.93rem; }
-
-    /* --- Hero --- */
-    #hero { min-height: 88vh; padding-top: 5.5rem; padding-bottom: 3rem; }
-    .hero-badge { font-size: 0.65rem; padding: 0.32rem 0.8rem; letter-spacing: 0.06em; }
-    .hero-title { font-size: clamp(2.4rem, 11vw, 3.2rem); margin-bottom: 0.5rem; }
-    .hero-sub {
-      white-space: normal;
-      font-size: clamp(0.85rem, 3.8vw, 1.05rem);
-      max-width: 90vw;
-      margin-left: auto; margin-right: auto;
-    }
-    .hero-actions { flex-direction: column; align-items: center; gap: 0.75rem; }
-    .btn-primary, .btn-ghost {
-      width: 100%; max-width: 280px;
-      justify-content: center;
-      padding: 0.85rem 1.5rem;
-      font-size: 0.88rem;
-    }
-
-    /* --- Sobre --- */
-    .sobre-grid { gap: 2rem; }
-    .sobre-stats { grid-template-columns: repeat(3, 1fr); gap: 0.7rem; }
-    .stat-item { padding: 1rem 0.6rem; }
-    .stat-num { font-size: 1.45rem; }
-    .stat-label { font-size: 0.68rem; }
-    .sobre-bottom-grid .flip-card { height: 260px; }
-    .sobre-bottom-grid .obj-mviewport { height: 260px; }
-    .sobre-bottom-grid .obj-mcard { height: 260px; }
-    .flip-back-text { font-size: 0.72rem; line-height: 1.6; }
-
-    /* --- Trayectoria tabs --- */
-    .tab-btn { font-size: 0.78rem; padding: 0.5rem 1rem; white-space: nowrap; }
-
-    /* --- Rec cards --- */
-    .recorrido-grid { gap: 0.8rem; }
-    .rec-card-title { font-size: 0.9rem; }
-    .rec-card-desc { font-size: 0.78rem; }
-
-    /* --- Servicios --- */
-    .servicios-header { margin-bottom: 2.5rem; }
-    .servicios-sub-title { font-size: 1.05rem; margin-bottom: 1rem; }
-    .servicios-marquee + .servicios-marquee { margin-top: 2rem; }
-
-    /* --- Herramientas --- */
-    .herramientas-header { margin-bottom: 2.5rem; }
-    .herramientas-grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.8rem;
-      max-width: 100%;
-    }
-    .tool-card { padding: 1.2rem 0.4rem; border-radius: 12px; }
-    .tool-logo { width: 38px; height: 38px; margin-bottom: 0.5rem; }
-    .tool-name { font-size: 0.68rem; }
-
-    /* --- Ubicacion --- */
-    .ubicacion-header { margin-bottom: 2rem; }
-    .ubicacion-map iframe { height: 260px; }
-
-    /* --- Contacto --- */
-    .contacto-title { font-size: 1.55rem; }
-    .contacto-wrap .section-desc { font-size: 0.9rem; }
-    .contacto-card { border-radius: 12px; padding: 1.1rem 1.2rem; height: 260px; justify-content: center; }
-    .contacto-card-icon { width: 40px; height: 40px; border-radius: 10px; }
-    .contacto-card-value { font-size: 0.85rem; word-break: break-word; }
-    .contacto-card-label { font-size: 0.78rem; }
-
-    /* --- Nav mobile --- */
-    .nav-links.open { padding: 1.4rem 5vw 1.8rem; gap: 1.1rem; }
-    .nav-links.open a { font-size: 0.97rem; }
-
-    /* --- Modal --- */
-    .modal { max-width: 100%; }
-    .modal-body { padding: 1rem 1.2rem 1.5rem; }
-    .modal-overlay { padding: 1.5rem; }
-    .modal-title { font-size: 1.15rem; }
-    .modal-desc { font-size: 0.88rem; }
-
-    /* --- Easter egg --- */
-    .speech-bubble {
-      white-space: normal;
-      max-width: 180px;
-      font-size: 0.65rem;
-      bottom: 34px;
-      right: 20px;
-    }
-  }
-
-  /* =============================================
-     RESPONSIVE — SMALL MOBILE  ≤ 390px
-     ============================================= */
-  @media (max-width: 390px) {
-    section { padding: 3.5rem 4.5vw; }
-
-    /* Hero */
-    .hero-badge { font-size: 0.58rem; padding: 0.28rem 0.65rem; }
-    .hero-title { font-size: clamp(2rem, 12.5vw, 2.6rem); }
-    .hero-sub { font-size: clamp(0.78rem, 4vw, 0.95rem); }
-
-    /* Sobre stats — stack 1 col when very narrow */
-    .sobre-stats { grid-template-columns: repeat(3, 1fr); gap: 0.5rem; }
-    .stat-num { font-size: 1.25rem; }
-    .stat-item { padding: 0.8rem 0.4rem; }
-    .stat-label { font-size: 0.6rem; }
-
-    /* Herramientas — 2 cols */
-    .herramientas-grid { grid-template-columns: repeat(2, 1fr); gap: 0.6rem; }
-
-    /* Tabs */
-    .tab-btn { font-size: 0.72rem; padding: 0.42rem 0.85rem; }
-
-    /* Typography */
-    .section-title { font-size: clamp(1.5rem, 7.5vw, 1.9rem); }
-    .section-label { font-size: 0.65rem; }
-
-    /* Contacto email wraps */
-    .contacto-card-value { font-size: 0.8rem; }
-
-    /* Easter egg */
-    .speech-bubble { max-width: 150px; font-size: 0.6rem; bottom: 34px; right: 16px; }
-  }
-
-  #herramientas {
-    background: linear-gradient(180deg, var(--bg2) 0%, var(--bg) 100%);
-  }
-
-  .herramientas-header {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 4rem;
-  }
-
-  .herramientas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 1.2rem;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  .tool-card {
-    padding: 1.5rem 0.5rem;
-    background: var(--card);
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    text-align: center;
-    transition: border-color 0.3s, transform 0.3s;
-  }
-
-  .tool-card:hover {
-    border-color: rgba(54,122,133,0.35);
-    transform: translateY(-3px);
-  }
-
-  .tool-logo {
-    width: 52px; height: 52px;
-    display: block;
-    margin: 0 auto 0.6rem;
-    object-fit: contain;
-  }
-
-  .tool-name {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.02em;
-  }
-
-  #ubicacion {
-    background: var(--bg);
-  }
-
-  .ubicacion-header {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 3rem;
-  }
-
-  .ubicacion-map {
-    max-width: 800px;
-    margin: 0 auto;
-    border: 0.5px solid var(--border);
-    border-radius: 14px;
-    overflow: hidden;
-  }
-
-  footer {
-    padding: 2.5rem 5vw;
-    border-top: 0.5px solid var(--border);
-    background: var(--bg);
-    position: relative;
-  }
-
-  .mouse-hole {
-    position: absolute;
-    bottom: 0; right: 5vw;
-    cursor: pointer;
-    z-index: 10;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .mouse-hole-arch {
-    width: 26px; height: 32px;
-    background: #111;
-    border-radius: 13px 13px 0 0;
-    position: relative;
-  }
-
-  .mouse-eyes {
-    position: absolute;
-    bottom: 8px; left: 50%;
-    transform: translateX(-50%);
-    display: flex; gap: 5px;
-    opacity: 0;
-    transition: opacity 0.3s;
-  }
-
-  .mouse-eye {
-    width: 4px; height: 4px;
-    background: rgba(255,255,255,0.7);
-    border-radius: 50%;
-    box-shadow: 0 0 3px rgba(255,255,255,0.3);
-  }
-
-
-  .mouse-hole-base {
-    width: 40px; height: 2px;
-    background: #111;
-    margin-top: -1px;
-  }
-
-  .speech-bubble {
-    position: absolute;
-    bottom: 36px; right: 30px;
-    background: var(--text);
-    color: var(--bg);
-    padding: 7px 14px;
-    border-radius: 10px;
-    font-size: 0.7rem;
-    font-weight: 500;
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    white-space: nowrap;
-    text-align: center;
-    opacity: 0;
-    transform: translateY(6px);
-    transition: opacity 0.25s, transform 0.25s;
-    pointer-events: none;
-  }
-
-  .speech-bubble::after {
-    content: '';
-    position: absolute;
-    bottom: -8px; right: 10px;
-    border-top: 8px solid var(--text);
-    border-left: 8px solid transparent;
-  }
-
-  .speech-bubble.show {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .footer-inner {
-    max-width: 1100px;
-    margin: 0 auto;
-    display: flex; align-items: center; justify-content: center;
-    gap: 1rem;
-    color: var(--muted);
-    font-size: 0.8rem;
-    font-weight: 300;
-    text-align: center;
-    flex-wrap: wrap;
-  }
-
-  .footer-sep {
-    width: 3px; height: 3px;
-    border-radius: 50%;
-    background: var(--accent);
-  }
-
-  .section-divider {
-    border-top: 0.5px solid var(--border);
-  }
-
-</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;800&amp;family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&amp;display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fonts/Nasalization Rg.otf" as="font" type="font/otf" crossorigin>
+<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="icon" href="assets/logos/auvirlab.png">
 <script src="https://unpkg.com/lenis@1.1.13/dist/lenis.min.js"></script>
 <script src="https://unpkg.com/feather-icons"></script>
-<style>
-  html.lenis, html.lenis body { height: auto; }
-  .lenis.lenis-smooth { scroll-behavior: auto !important; }
-</style>
 </head>
 <body>
 
@@ -1557,12 +40,10 @@
 <!-- PRESENTACIÓN (HERO)                           -->
 <!-- ============================================ -->
 <section id="hero">
-  <div class="hero-bg"></div>
-  <canvas id="hero-particles"></canvas>
-
-  <div class="hero-badge">
-    <i data-feather="search" width="14" height="14"></i>
-    SEMILLERO DE INVESTIGACIÓN
+  <div class="hero-video">
+    <video autoplay muted playsinline preload="auto" class="hero-vid" id="heroVid0" src="assets/videos/video1.mp4"></video>
+    <video muted playsinline preload="auto" class="hero-vid" id="heroVid1" style="opacity:0" src="assets/videos/video2.mp4"></video>
+    <div class="hero-video-overlay"></div>
   </div>
 
   <h1 class="hero-title font-nasal">AUVIR <span>|</span> LAB</h1>
@@ -1590,17 +71,12 @@
         <div class="carousel-track">
           <div class="carousel-slide active">
             <div class="sobre-frame" style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
-              <img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP">
+              <img src="assets/images/semillero/quiénes somos/SA400020.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP">
             </div>
           </div>
           <div class="carousel-slide">
             <div class="sobre-frame" style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
-              <img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP">
-            </div>
-          </div>
-          <div class="carousel-slide">
-            <div class="sobre-frame" style="display: flex; align-items: center; justify-content: center; overflow: hidden;">
-              <img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP">
+              <img src="assets/images/semillero/quiénes somos/2573faa9-2c75-499f-956f-cabd01a1a25c.png" style="width:100%;height:100%;object-fit:cover;" alt="WIP">
             </div>
           </div>
         </div>
@@ -1610,7 +86,7 @@
         <button class="carousel-btn carousel-next" aria-label="Siguiente">
           <i data-feather="chevron-right" width="20" height="20"></i>
         </button>
-        <div class="carousel-dots"></div>
+        <div class="carousel-counter">1 / 2</div>
       </div>
     </div>
 
@@ -1629,7 +105,7 @@
         <div class="flip-front">
           <i data-feather="target" class="flip-front-icon"></i>
           <div class="flip-front-label">Misión</div>
-          <div class="flip-hint">toca para ver</div>
+          <div class="flip-hint">Toca para ver</div>
         </div>
         <div class="flip-back">
           <div class="flip-back-label">Misión</div>
@@ -1642,7 +118,7 @@
         <div class="flip-front">
           <i data-feather="eye" class="flip-front-icon"></i>
           <div class="flip-front-label">Visión</div>
-          <div class="flip-hint">toca para ver</div>
+          <div class="flip-hint">Toca para ver</div>
         </div>
         <div class="flip-back">
           <div class="flip-back-label">Visión</div>
@@ -1657,49 +133,49 @@
             <div class="obj-mcard-num">OBJETIVO #1</div>
             <div class="obj-mcard-title">Excelencia Técnica y Estética</div>
             <div class="obj-mcard-desc">Desarrollar simulaciones virtuales con los más altos estándares técnicos y estéticos.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #2</div>
             <div class="obj-mcard-title">Innovación Continua</div>
             <div class="obj-mcard-desc">Permanecer a la vanguardia de la tecnología y la creatividad en simulaciones virtuales.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #3</div>
             <div class="obj-mcard-title">Ampliación de Mercado</div>
             <div class="obj-mcard-desc">Expandir nuestra presencia en mercados clave y diversificar nuestros segmentos de clientes.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #4</div>
             <div class="obj-mcard-title">Satisfacción del Cliente</div>
             <div class="obj-mcard-desc">Mantener altos niveles de satisfacción a través de atención personalizada y mejora continua.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #5</div>
             <div class="obj-mcard-title">Desarrollo de Talento</div>
             <div class="obj-mcard-desc">Fomentar el crecimiento de nuestro equipo, promoviendo la formación y nuevas habilidades.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #6</div>
             <div class="obj-mcard-title">Sostenibilidad Financiera</div>
             <div class="obj-mcard-desc">Lograr una rentabilidad sólida y una gestión financiera saludable a largo plazo.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #7</div>
             <div class="obj-mcard-title">Responsabilidad Social</div>
             <div class="obj-mcard-desc">Comprometernos con prácticas responsables y sostenibles con impacto positivo.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
           <div class="obj-mcard">
             <div class="obj-mcard-num">OBJETIVO #8</div>
             <div class="obj-mcard-title">Colaboraciones Estratégicas</div>
             <div class="obj-mcard-desc">Establecer alianzas con líderes de la industria y organizaciones educativas.</div>
-            <div class="obj-card-hint">toca para avanzar</div>
+            <div class="obj-card-hint">Toca para avanzar</div>
           </div>
         </div>
       </div>
@@ -1717,103 +193,118 @@
   <div class="recorrido-header reveal reveal-up">
     <div class="section-label">El camino que construímos</div>
     <h2 class="section-title">Trayectoria</h2>
-    <p class="section-desc">Explora nuestro camino a través de proyectos, talleres, conferencias y participaciones.</p>
+    <p class="section-desc">Explora nuestro camino a través de proyectos, talleres, cursos, ferias y participaciones.</p>
   </div>
 
   <div class="tabs reveal reveal-up reveal-d1">
     <button class="tab-btn active" data-tab="proyectos">Proyectos</button>
     <button class="tab-btn" data-tab="talleres">Talleres</button>
-    <button class="tab-btn" data-tab="conferencias">Conferencias</button>
+    <button class="tab-btn" data-tab="cursos">Cursos</button>
+    <button class="tab-btn" data-tab="ferias">Ferias y Exposiciones</button>
     <button class="tab-btn" data-tab="participaciones">Participaciones</button>
   </div>
 
   <div class="tab-content active" id="tab-proyectos">
     <div class="recorrido-grid">
-      <div class="rec-card rec-card-featured reveal reveal-up" data-title="Gemelo Virtual" data-desc="Este proyecto busca crear una representación virtual completa de la Universidad del Sinú, aprovechando la realidad virtual para ofrecer a estudiantes, profesores y visitantes una experiencia inmersiva única. Ventajas: accesibilidad global, interactividad enriquecida, flexibilidad en la enseñanza y exploración de entornos educativos innovadores." data-images="workinprogress.jpg,workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
+      <div class="rec-card rec-card-featured reveal reveal-up" data-title="Gemelo Virtual" data-desc="Este proyecto busca crear una representación virtual de la Universidad del Sinú completa, aprovechando la tecnología de la realidad virtual para ofrecer a estudiantes, profesores y visitantes una experiencia inmersiva única. Las ventajas incluyen la accesibilidad global, la interactividad enriquecida, la flexibilidad en la enseñanza y la exploración de entornos educativos innovadores." data-images="assets/images/semillero/proyectos/Gemelo Virtual/chatgpt_gemelo_virtual.png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/proyectos/Gemelo Virtual/chatgpt_gemelo_virtual.png'); background-size: cover; background-position: center;"></div>
         <div class="rec-card-info">
           <div class="rec-card-info-main">
-            <div class="rec-card-title">Gemelo Virtual</div>
-            <div class="rec-card-desc">Réplica virtual de la Universidad del Sinú que brinda una experiencia inmersiva con accesibilidad global, interactividad y flexibilidad educativa.</div>
-            <div class="rec-card-badge">Proyecto destacado</div>
+            <div class="rec-card-title">Gemelo Virtual <span class="featured-badge-wrap"><i data-feather="award" width="18" height="18" class="featured-badge-icon"></i><div class="rec-card-featured-badge">Proyecto destacado</div></span></div>
+            <div class="rec-card-desc">Réplica virtual inmersiva de la Universidad del Sinú para exploración educativa interactiva.</div>
           </div>
-          <div class="rec-card-hint">toca para saber más</div>
+          <div class="rec-card-hint">Toca para saber más</div>
         </div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d1" data-title="Reconstrucción Virtual de Ayapel" data-desc="Recorrido inmersivo por la historia colonial de Ayapel, Córdoba. Modelado 3D de edificaciones patrimoniales y reconstrucción de espacios históricos perdidos." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Reconstrucción Virtual de Ayapel</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up" data-title="Del Aula a la Vivienda" data-images="assets/images/semillero/proyectos/Del Aula a la Vivienda/image (34).png,assets/images/semillero/proyectos/Del Aula a la Vivienda/image (35).png,assets/images/semillero/proyectos/Del Aula a la Vivienda/WhatsApp Image 2026-05-11 at 12.35.34 AM.jpg">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/proyectos/Del Aula a la Vivienda/image (34).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Del Aula a la Vivienda</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d2" data-title="Laboratorio de Ciencias XR" data-desc="Plataforma de simulación de experimentos físico-químicos en realidad virtual para instituciones educativas de la región Caribe." data-images="workinprogress.jpg,workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Laboratorio de Ciencias XR</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up reveal-d1" data-title="Ecos del Pasado" data-desc="Historia y Fe en Realidad Digital de la Catedral San Jerónimo de Montería. Proyecto enfocado en la preservación y divulgación del patrimonio artístico, arquitectónico y cultural de la Catedral San Jerónimo de Montería mediante experiencias inmersivas y herramientas digitales." data-images="assets/images/none.png">
+        <div class="rec-card-img" style="background-image: url('assets/images/none.png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Ecos del Pasado</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d3" data-title="Ruta del Caribe en AR" data-desc="Aplicación de realidad aumentada para turismo cultural en Córdoba. Superposición digital de información histórica en sitios emblemáticos." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Ruta del Caribe en AR</div>
-        <div class="rec-card-hint">toca para saber más</div>
-      </div>
-      <div class="rec-card reveal reveal-up reveal-d4" data-title="Visualizador Urbano VR" data-desc="Herramienta de visualización arquitectónica en realidad virtual para proyectos de planificación urbana y diseño de espacios públicos." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Visualizador Urbano VR</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up reveal-d2" data-title="TURISMAPP" data-desc="Una estrategia digital para la revalorización del patrimonio Monteriano. Plataforma interactiva con mapa turístico inteligente, geolocalización, realidad aumentada y modelado 3D para explorar edificaciones históricas de Montería." data-images="assets/images/none.png">
+        <div class="rec-card-img" style="background-image: url('assets/images/none.png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">TURISMAPP</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
     </div>
   </div>
 
   <div class="tab-content" id="tab-talleres">
     <div class="recorrido-grid">
-      <div class="rec-card reveal reveal-up reveal-d1" data-title="Taller de Modelado 3D Básico" data-desc="Taller introductorio de modelado 3D con Blender dirigido a estudiantes de arquitectura. Fundamentos de modelado poligonal, texturizado y renderizado básico." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Taller de Modelado 3D Básico</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up" data-title="Experiencias de Verano" data-desc="Taller de experiencias de verano dirigido a la comunidad universitaria, fomentando la creatividad y el aprendizaje en entornos digitales e inmersivos." data-images="assets/images/semillero/talleres/Experiencias de verano/image (23).png,assets/images/semillero/talleres/Experiencias de verano/image (24).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/talleres/Experiencias de verano/image (23).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Experiencias de Verano</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d2" data-title="Introducción a Unity VR" data-desc="Taller práctico de desarrollo de experiencias VR con Unity 3D. Configuración de entornos inmersivos, interacción básica y optimización para dispositivos móviles." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Introducción a Unity VR</div>
-        <div class="rec-card-hint">toca para saber más</div>
-      </div>
-      <div class="rec-card reveal reveal-up reveal-d3" data-title="Workshop AR para Docentes" data-desc="Capacitación docente en tecnologías de realidad aumentada aplicadas al aula. Creación de materiales educativos interactivos con herramientas AR accesibles." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Workshop AR para Docentes</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up reveal-d1" data-title="Taller de Imaginarios" data-desc="Taller con niños del Cerro de Montería utilizando dibujo y representación visual para recopilar ideas sobre un corredor turístico cultural, promoviendo creatividad, participación y apropiación del territorio." data-images="assets/images/semillero/talleres/Taller de Imaginarios/image (20).png,assets/images/semillero/talleres/Taller de Imaginarios/image (22).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/talleres/Taller de Imaginarios/image (20).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Taller de Imaginarios</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
     </div>
   </div>
 
-  <div class="tab-content" id="tab-conferencias">
+  <div class="tab-content" id="tab-cursos">
     <div class="recorrido-grid">
-      <div class="rec-card reveal reveal-up reveal-d4" data-title="XR en Educación — Unisinu 2024" data-desc="Ponencia sobre el impacto de las tecnologías XR en la educación superior, presentada en el Congreso de Innovación Educativa de la Universidad del Sinú." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">XR en Educación — Unisinu 2024</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up" data-title="Manejo de Drones" data-images="assets/images/semillero/cursos/Manejo de Drones/image (25).png,assets/images/semillero/cursos/Manejo de Drones/image (26).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/cursos/Manejo de Drones/image (25).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Manejo de Drones</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d1" data-title="Patrimonio Digital — Foro Cultural" data-desc="Charla sobre preservación digital del patrimonio arquitectónico caribeño mediante realidad virtual, presentada en el Foro de Cultura y Tecnología de Montería." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Patrimonio Digital — Foro Cultural</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up reveal-d1" data-title="Renderización + IA" data-images="assets/images/semillero/cursos/Renderizacion + IA/image (18).png,assets/images/semillero/cursos/Renderizacion + IA/image (19).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/cursos/Renderizacion + IA/image (18).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Renderización + IA</div>
+        <div class="rec-card-hint">Toca para saber más</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-content" id="tab-ferias">
+    <div class="recorrido-grid">
+      <div class="rec-card reveal reveal-up" data-title="COP16" data-desc="Participación en la COP 16 en Cali con experiencias de realidad virtual para la divulgación del patrimonio natural y cultural." data-images="assets/images/semillero/ferias y exposiciones/COP16/image (36).png,assets/images/semillero/ferias y exposiciones/COP16/image (37).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/ferias y exposiciones/COP16/image (36).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">COP16</div>
+        <div class="rec-card-hint">Toca para saber más</div>
+      </div>
+      <div class="rec-card reveal reveal-up reveal-d1" data-title="Expofuturo" data-desc="AUVIRLAB presente en EXPOFUTURO como espacio de divulgación tecnológica y cultural para jóvenes." data-images="assets/images/semillero/ferias y exposiciones/Expofuturo/image (14).png,assets/images/semillero/ferias y exposiciones/Expofuturo/image (15).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/ferias y exposiciones/Expofuturo/image (14).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Expofuturo</div>
+        <div class="rec-card-hint">Toca para saber más</div>
+      </div>
+      <div class="rec-card reveal reveal-up reveal-d2" data-title="ExpoVivienda" data-desc="Participación en ferias de vivienda en Montería con experiencias inmersivas aplicadas al diseño arquitectónico y urbano." data-images="assets/images/semillero/ferias y exposiciones/ExpoVivienda/image (16).png,assets/images/semillero/ferias y exposiciones/ExpoVivienda/image (17).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/ferias y exposiciones/ExpoVivienda/image (16).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">ExpoVivienda</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
     </div>
   </div>
 
   <div class="tab-content" id="tab-participaciones">
     <div class="recorrido-grid">
-      <div class="rec-card reveal reveal-up reveal-d2" data-title="Hackathon VR 2025" data-desc="Participación en hackathon nacional de realidad virtual. Desarrollo de una experiencia educativa inmersiva sobre ecosistemas colombianos en 48 horas." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Hackathon VR 2025</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up" data-title="Jóvenes por el Cambio — MINCULTURA" data-images="assets/images/semillero/participaciones/Jovenes por el Cambio (MINCULTURA)/image (27).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/participaciones/Jovenes por el Cambio (MINCULTURA)/image (27).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Jóvenes por el Cambio — MINCULTURA</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d3" data-title="Feria de Innovación Unisinu" data-desc="Exposición de proyectos XR del semillero en la Feria de Innovación y Emprendimiento de la Universidad del Sinú. Demostración en vivo de experiencias VR y AR." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Feria de Innovación Unisinu</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up reveal-d1" data-title="Portafolio de Estímulos — Alcaldía de Montería" data-images="assets/images/semillero/participaciones/Portafolio de Estimulos (Alcaldia de Monteria)/image (29).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/participaciones/Portafolio de Estimulos (Alcaldia de Monteria)/image (29).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Portafolio de Estímulos — Alcaldía de Montería</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
-      <div class="rec-card reveal reveal-up reveal-d4" data-title="Expo Tecnología Caribe" data-desc="Participación en la vitrina tecnológica más importante de la región Caribe. Presentación de la Ruta del Caribe en AR y el Laboratorio de Ciencias XR." data-images="workinprogress.jpg,workinprogress.jpg">
-        <div class="rec-card-img"><img src="assets/images/workinprogress.jpg" style="width:100%;height:100%;object-fit:cover;" alt="WIP"></div>
-        <div class="rec-card-title">Expo Tecnología Caribe</div>
-        <div class="rec-card-hint">toca para saber más</div>
+      <div class="rec-card reveal reveal-up reveal-d2" data-title="Premio Mario Hernández" data-images="assets/images/semillero/participaciones/Premio Mario Hernandez/image (30).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/participaciones/Premio Mario Hernandez/image (30).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">Premio Mario Hernández</div>
+        <div class="rec-card-hint">Toca para saber más</div>
+      </div>
+      <div class="rec-card reveal reveal-up reveal-d3" data-title="RedCOLSI" data-images="assets/images/semillero/participaciones/RedCOLSI/image (31).png,assets/images/semillero/participaciones/RedCOLSI/image (32).png,assets/images/semillero/participaciones/RedCOLSI/image (33).png">
+        <div class="rec-card-img" style="background-image: url('assets/images/semillero/participaciones/RedCOLSI/image (31).png'); background-size: cover; background-position: center;"></div>
+        <div class="rec-card-title">RedCOLSI</div>
+        <div class="rec-card-hint">Toca para saber más</div>
       </div>
     </div>
   </div>
@@ -1843,7 +334,7 @@
       </div>
       <div class="servicio-card-title">Recorridos Virtuales</div>
       <div class="servicio-card-desc">Entornos virtuales interactivos para explorar y recorrer espacios libremente.</div>
-      <div class="servicio-card-price">Desde $80.000</div>
+      <div class="servicio-card-price">Desde $80.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1852,7 +343,7 @@
       </div>
       <div class="servicio-card-title">Realidad Virtual</div>
       <div class="servicio-card-desc">Espacios y objetos digitales con sensación realista que sumergen al usuario.</div>
-      <div class="servicio-card-price">Desde $80.000</div>
+      <div class="servicio-card-price">Desde $80.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1861,7 +352,7 @@
       </div>
       <div class="servicio-card-title">Realidad Aumentada</div>
       <div class="servicio-card-desc">Elementos virtuales superpuestos a la realidad para visualizar obras arquitectónicas.</div>
-      <div class="servicio-card-price">Desde $800.000</div>
+      <div class="servicio-card-price">Desde $800.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1870,7 +361,7 @@
       </div>
       <div class="servicio-card-title">Asesorías</div>
       <div class="servicio-card-desc">Consultoría en renderizado, RA, RV y modelado 3D para transformar conceptos en experiencias visuales.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1879,7 +370,7 @@
       </div>
       <div class="servicio-card-title">Imágenes 360°</div>
       <div class="servicio-card-desc">Imágenes panorámicas envolventes que destacan la belleza y detalles de tus proyectos.</div>
-      <div class="servicio-card-price">Desde $2.000.000</div>
+      <div class="servicio-card-price">Desde $2.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1888,7 +379,7 @@
       </div>
       <div class="servicio-card-title">Modelado 3D</div>
       <div class="servicio-card-desc">Modelación 3D de alta precisión para arquitectura, diseño de productos y más.</div>
-      <div class="servicio-card-price">Desde $300.000</div>
+      <div class="servicio-card-price">Desde $300.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1897,7 +388,7 @@
       </div>
       <div class="servicio-card-title">Renders realistas</div>
       <div class="servicio-card-desc">Renders fotorrealistas que capturan detalles, texturas y atmósferas de forma vívida.</div>
-      <div class="servicio-card-price">Desde $300.000</div>
+      <div class="servicio-card-price">Desde $300.000 COP</div>
     </div>
 
       </div>
@@ -1909,7 +400,7 @@
       </div>
       <div class="servicio-card-title">Recorridos Virtuales</div>
       <div class="servicio-card-desc">Entornos virtuales interactivos para explorar y recorrer espacios libremente.</div>
-      <div class="servicio-card-price">Desde $80.000</div>
+      <div class="servicio-card-price">Desde $80.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1918,7 +409,7 @@
       </div>
       <div class="servicio-card-title">Realidad Virtual</div>
       <div class="servicio-card-desc">Espacios y objetos digitales con sensación realista que sumergen al usuario.</div>
-      <div class="servicio-card-price">Desde $80.000</div>
+      <div class="servicio-card-price">Desde $80.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1927,7 +418,7 @@
       </div>
       <div class="servicio-card-title">Realidad Aumentada</div>
       <div class="servicio-card-desc">Elementos virtuales superpuestos a la realidad para visualizar obras arquitectónicas.</div>
-      <div class="servicio-card-price">Desde $800.000</div>
+      <div class="servicio-card-price">Desde $800.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1936,7 +427,7 @@
       </div>
       <div class="servicio-card-title">Asesorías</div>
       <div class="servicio-card-desc">Consultoría en renderizado, RA, RV y modelado 3D para transformar conceptos en experiencias visuales.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1945,7 +436,7 @@
       </div>
       <div class="servicio-card-title">Imágenes 360°</div>
       <div class="servicio-card-desc">Imágenes panorámicas envolventes que destacan la belleza y detalles de tus proyectos.</div>
-      <div class="servicio-card-price">Desde $2.000.000</div>
+      <div class="servicio-card-price">Desde $2.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1954,7 +445,7 @@
       </div>
       <div class="servicio-card-title">Modelado 3D</div>
       <div class="servicio-card-desc">Modelación 3D de alta precisión para arquitectura, diseño de productos y más.</div>
-      <div class="servicio-card-price">Desde $300.000</div>
+      <div class="servicio-card-price">Desde $300.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1963,7 +454,7 @@
       </div>
       <div class="servicio-card-title">Renders realistas</div>
       <div class="servicio-card-desc">Renders fotorrealistas que capturan detalles, texturas y atmósferas de forma vívida.</div>
-      <div class="servicio-card-price">Desde $300.000</div>
+      <div class="servicio-card-price">Desde $300.000 COP</div>
     </div>
 
       </div>
@@ -1983,7 +474,7 @@
       </div>
       <div class="servicio-card-title">Diseño Arquitectónico</div>
       <div class="servicio-card-desc">Diseño arquitectónico que fusiona innovación, estética y eficiencia espacial.</div>
-      <div class="servicio-card-price">Desde $2.000.000</div>
+      <div class="servicio-card-price">Desde $2.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -1992,7 +483,7 @@
       </div>
       <div class="servicio-card-title">Diseño de interiores y exteriores</div>
       <div class="servicio-card-desc">Transformación de espacios interiores y exteriores en obras funcionales y estéticas.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -2001,7 +492,7 @@
       </div>
       <div class="servicio-card-title">Planimetrías</div>
       <div class="servicio-card-desc">Planos técnicos, cortes y fachadas precisos para construcción.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -2010,7 +501,7 @@
       </div>
       <div class="servicio-card-title">Diseño de Mobiliarios</div>
       <div class="servicio-card-desc">Muebles personalizados que combinan funcionalidad y estilo para cada espacio.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
       </div>
@@ -2022,7 +513,7 @@
       </div>
       <div class="servicio-card-title">Diseño Arquitectónico</div>
       <div class="servicio-card-desc">Diseño arquitectónico que fusiona innovación, estética y eficiencia espacial.</div>
-      <div class="servicio-card-price">Desde $2.000.000</div>
+      <div class="servicio-card-price">Desde $2.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -2031,7 +522,7 @@
       </div>
       <div class="servicio-card-title">Diseño de interiores y exteriores</div>
       <div class="servicio-card-desc">Transformación de espacios interiores y exteriores en obras funcionales y estéticas.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -2040,7 +531,7 @@
       </div>
       <div class="servicio-card-title">Planimetrías</div>
       <div class="servicio-card-desc">Planos técnicos, cortes y fachadas precisos para construcción.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
     <div class="servicio-card">
@@ -2049,19 +540,17 @@
       </div>
       <div class="servicio-card-title">Diseño de Mobiliarios</div>
       <div class="servicio-card-desc">Muebles personalizados que combinan funcionalidad y estilo para cada espacio.</div>
-      <div class="servicio-card-price">Desde $1.000.000</div>
+      <div class="servicio-card-price">Desde $1.000.000 COP</div>
     </div>
 
       </div>
     </div>
+    </div>
   </div>
-</div>
+    </div>
+  </div>
 </section>
-
 <div style="padding: 0 5vw;"><div class="section-divider"></div></div>
-
-<!-- ============================================ -->
-<!-- HERRAMIENTAS                                  -->
 <!-- ============================================ -->
 <section id="herramientas">
   <div class="herramientas-header reveal reveal-up">
@@ -2182,6 +671,14 @@
       </a>
     </div>
   </div>
+  <div class="mouse-hole" id="mouseHole" aria-label="Easter egg">
+    <div class="mouse-hole-arch">
+      <div class="mouse-eyes">
+        <div class="mouse-eye"></div>
+        <div class="mouse-eye"></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <div style="padding: 0 5vw;"><div class="section-divider"></div></div>
@@ -2197,19 +694,25 @@
     <span class="footer-sep"></span>
     <span>Monter&iacute;a, C&oacute;rdoba</span>
   </div>
-  <div class="mouse-hole" id="mouseHole" aria-label="Easter egg">
-    <div class="mouse-hole-arch">
-      <div class="mouse-eyes">
-        <div class="mouse-eye"></div>
-        <div class="mouse-eye"></div>
-      </div>
-    </div>
-    <div class="speech-bubble" id="speechBubble">Página por José Medrano</div>
-  </div>
 </footer>
 
+<div class="egg-modal-overlay" id="eggModal">
+  <button class="egg-modal-close" id="eggModalClose" type="button" aria-label="Cerrar">
+    <i data-feather="x" width="20" height="20"></i>
+  </button>
+  <div class="egg-modal">
+    <div class="egg-modal-title">¿Te gusta el queso?</div>
+    <img src="assets/images/github_pfp.jpg" alt="José Medrano" class="egg-modal-pfp">
+    <div class="egg-modal-name">Encontraste a <strong>José Medrano</strong></div>
+    <div class="egg-modal-sub">Desarrollador de esta página</div>
+    <a href="https://github.com/JayDenMD24" class="egg-modal-link" target="_blank" rel="noopener">
+      <i data-feather="github" width="16" height="16"></i> @JayDenMD24
+    </a>
+  </div>
+</div>
+
 <div class="modal-overlay" id="modal">
-  <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar" onclick="closeModal()">
+  <button class="modal-close" id="modalClose" type="button" aria-label="Cerrar">
     <i data-feather="x" width="20" height="20"></i>
   </button>
   <div class="modal">
@@ -2225,444 +728,13 @@
       </button>
       <div class="modal-counter" id="modalCounter">1 / 3</div>
     </div>
-    <div class="modal-body">
+    <div class="modal-sidebar">
       <div class="modal-title" id="modalTitle"></div>
       <div class="modal-desc" id="modalDesc"></div>
     </div>
   </div>
 </div>
 
-<script>
-  function toggleMenu() {
-    document.getElementById('nav-links').classList.toggle('open');
-  }
-
-  const lenis = new Lenis({
-    duration: 1.2,
-    easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-    orientation: 'vertical',
-    smoothWheel: true,
-    wheelMultiplier: 1
-  });
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
-  feather.replace();
-
-
-  document.querySelectorAll('a[href^="#"]').forEach(a => {
-    a.addEventListener('click', (e) => {
-      e.preventDefault();
-      const id = a.getAttribute('href');
-      if (id && id.length > 1) {
-        const target = document.querySelector(id);
-        if (target) lenis.scrollTo(target);
-      }
-      document.getElementById('nav-links').classList.remove('open');
-    });
-  });
-
-  /* ---------- TABS ---------- */
-  function switchTab(tabId) {
-    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-    document.querySelectorAll('.tab-content').forEach(tc => tc.classList.remove('active'));
-    document.querySelector(`.tab-btn[data-tab="${tabId}"]`).classList.add('active');
-    document.getElementById(`tab-${tabId}`).classList.add('active');
-  }
-
-  document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => switchTab(btn.dataset.tab));
-  });
-
-  /* ---------- MODAL ---------- */
-  const modal = document.getElementById('modal');
-  const modalTitle = document.getElementById('modalTitle');
-  const modalDesc = document.getElementById('modalDesc');
-  const modalTrack = document.getElementById('modalTrack');
-  const modalCounter = document.getElementById('modalCounter');
-  const modalPrev = document.getElementById('modalPrev');
-  const modalNext = document.getElementById('modalNext');
-  const modalClose = document.getElementById('modalClose');
-
-  let currentImages = [];
-  let currentImageIndex = 0;
-
-  function showGalleryImage(index) {
-    currentImageIndex = index;
-    modalTrack.style.transform = `translateX(-${index * 100}%)`;
-    modalCounter.textContent = `${index + 1} / ${currentImages.length}`;
-  }
-
-  document.querySelectorAll('.rec-card').forEach(card => {
-    card.addEventListener('click', () => {
-      modalTitle.textContent = card.dataset.title;
-      modalDesc.textContent = card.dataset.desc;
-      currentImages = (card.dataset.images || 'assets/images/workinprogress.jpg').split(',');
-      currentImageIndex = 0;
-      modalTrack.innerHTML = currentImages.map(src =>
-        `<div class="modal-img-slide"><img src="${src}" alt=""></div>`
-      ).join('');
-      modalTrack.style.transition = 'none';
-      modalTrack.style.transform = 'translateX(0)';
-      void modalTrack.offsetHeight;
-      modalTrack.style.transition = '';
-      modalCounter.textContent = `1 / ${currentImages.length}`;
-      modal.classList.add('open');
-    });
-  });
-
-  modalPrev.addEventListener('click', () => {
-    if (currentImages.length > 1) {
-      const prev = (currentImageIndex - 1 + currentImages.length) % currentImages.length;
-      showGalleryImage(prev);
-    }
-  });
-
-  modalNext.addEventListener('click', () => {
-    if (currentImages.length > 1) {
-      const next = (currentImageIndex + 1) % currentImages.length;
-      showGalleryImage(next);
-    }
-  });
-
-  function closeModal() { document.getElementById('modal').classList.remove('open'); }
-  modalClose.addEventListener('click', closeModal);
-  modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-  /* ---------- CAROUSEL ---------- */
-  document.querySelectorAll('.carousel').forEach(c => {
-    const track = c.querySelector('.carousel-track');
-    const slides = c.querySelectorAll('.carousel-slide');
-    const dots = c.querySelector('.carousel-dots');
-    const prev = c.querySelector('.carousel-prev');
-    const next = c.querySelector('.carousel-next');
-    let idx = 0;
-
-    slides.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => go(i));
-      dots.appendChild(dot);
-    });
-
-    function go(i) {
-      idx = i;
-      track.style.transform = `translateX(-${idx * 100}%)`;
-      dots.querySelectorAll('.carousel-dot').forEach((d, j) => d.classList.toggle('active', j === idx));
-    }
-
-    prev.addEventListener('click', () => go(idx > 0 ? idx - 1 : slides.length - 1));
-    next.addEventListener('click', () => go(idx < slides.length - 1 ? idx + 1 : 0));
-
-    let interval = setInterval(() => go(idx < slides.length - 1 ? idx + 1 : 0), 4000);
-    c.addEventListener('mouseenter', () => clearInterval(interval));
-    c.addEventListener('mouseleave', () => interval = setInterval(() => go(idx < slides.length - 1 ? idx + 1 : 0), 4000));
-  });
-
-  /* ---------- SCROLL REVEAL ---------- */
-  (function () {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            // Once visible, stop observing — animation only plays once (downward)
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      {
-        threshold: 0.12,
-        rootMargin: '0px 0px -40px 0px'
-      }
-    );
-
-    document.querySelectorAll('.reveal').forEach((el) => observer.observe(el));
-
-    // Re-observe newly visible tab content when tabs switch
-    document.querySelectorAll('.tab-btn').forEach((btn) => {
-      btn.addEventListener('click', () => {
-        setTimeout(() => {
-          document.querySelectorAll('.reveal:not(.visible)').forEach((el) => observer.observe(el));
-        }, 50);
-      });
-    });
-  })();
-
-
-  document.querySelectorAll('.flip-card').forEach(card => {
-    card.addEventListener('click', () => card.classList.toggle('flipped'));
-  });
-
-  /* ---------- OBJETIVOS VERTICAL CAROUSEL ---------- */
-  (function() {
-    const wrap = document.querySelector('.sobre-bottom-grid .obj-mwrap');
-    if (!wrap) return;
-    const viewport = wrap.querySelector('.obj-mviewport');
-    const track = viewport.querySelector('.obj-mtrack');
-    const cards = track.querySelectorAll('.obj-mcard');
-    const dotsContainer = wrap.querySelector('.obj-dots');
-    let idx = 0;
-    const total = cards.length;
-
-    // clone first card and append for seamless forward loop
-    const clone = cards[0].cloneNode(true);
-    track.appendChild(clone);
-    const allCards = track.children; // live HTMLCollection (total + 1)
-
-    cards.forEach((_, i) => {
-      const dot = document.createElement('div');
-      dot.className = 'obj-dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', function(e) {
-        e.stopPropagation();
-        go(i);
-      });
-      dotsContainer.appendChild(dot);
-    });
-
-    function go(i) {
-      const h = cards[0].offsetHeight;
-      idx = i;
-      track.style.transform = `translateY(-${idx * h}px)`;
-      const dotIdx = idx >= total ? 0 : idx;
-      dotsContainer.querySelectorAll('.obj-dot').forEach((d, j) => d.classList.toggle('active', j === dotIdx));
-    }
-
-    function next() { go(idx + 1 > total ? 0 : idx + 1); }
-    function prev() { go(idx === 0 ? total - 1 : idx - 1); }
-
-    track.addEventListener('transitionend', function onEnd() {
-      if (idx >= total) {
-        track.style.transition = 'none';
-        go(0);
-        requestAnimationFrame(() => requestAnimationFrame(() => {
-          track.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
-        }));
-      }
-    });
-
-    wrap.addEventListener('click', function(e) {
-      if (e.target.closest('.obj-dot')) return;
-      next();
-    });
-
-    // wheel support
-    viewport.addEventListener('wheel', function(e) {
-      e.preventDefault();
-      e.stopPropagation();
-      if (e.deltaY > 0) next();
-      else prev();
-    }, { passive: false });
-
-    // touch support
-    let touchStart = 0;
-    let touchEnd = 0;
-    viewport.addEventListener('touchstart', function(e) {
-      touchStart = e.changedTouches[0].screenY;
-    }, { passive: true });
-    viewport.addEventListener('touchend', function(e) {
-      touchEnd = e.changedTouches[0].screenY;
-      const diff = touchStart - touchEnd;
-      if (Math.abs(diff) > 30) {
-        if (diff > 0) next();
-        else prev();
-      }
-    }, { passive: true });
-  })();
-
-  /* ---------- MARQUEE DRAG (pixel-based, clone-wrapping, infinite) ---------- */
-  document.querySelectorAll('.marquee-wrap').forEach(wrap => {
-    const track = wrap.querySelector('.marquee-track');
-    const isReverse = track.dataset.dir === 'right';
-    let groups = track.querySelectorAll('.marquee-group');
-
-    // keep only first group, remove the rest (they were for old CSS animation)
-    for (let i = 1; i < groups.length; i++) groups[i].remove();
-    const orig = groups[0];
-
-    function fillClones() {
-      track.querySelectorAll('[aria-hidden]').forEach(n => n.remove());
-      const groupW = orig.offsetWidth;
-      if (!groupW) return;
-      const copies = Math.ceil((window.innerWidth * 3) / groupW) + 2;
-      const frag = document.createDocumentFragment();
-      for (let i = 0; i < copies; i++) {
-        const clone = orig.cloneNode(true);
-        clone.setAttribute('aria-hidden', 'true');
-        frag.appendChild(clone);
-      }
-      track.appendChild(frag);
-    }
-
-    fillClones();
-    window.addEventListener('resize', () => { pos = 0; fillClones(); });
-
-    const SPEED = isReverse ? 0.65 : -0.65;
-    let pos = isReverse ? -orig.offsetWidth : 0;
-    let dragging = false;
-    let dragStartX = 0;
-    let dragStartPos = 0;
-    let rafId = null;
-
-    function tick() {
-      if (!dragging) {
-        pos += SPEED;
-        const groupW = orig.offsetWidth;
-        if (groupW) {
-          while (pos > 0) pos -= groupW;
-          while (pos <= -groupW) pos += groupW;
-        }
-        track.style.transform = `translateX(${pos}px)`;
-      }
-      rafId = requestAnimationFrame(tick);
-    }
-
-    function getX(e) { return e.touches ? e.touches[0].clientX : e.clientX; }
-
-    wrap.addEventListener('mousedown', e => {
-      if (e.button !== 0) return;
-      dragging = true;
-      dragStartX = e.clientX;
-      dragStartPos = pos;
-      wrap.style.cursor = 'grabbing';
-    });
-
-    window.addEventListener('mousemove', e => {
-      if (!dragging) return;
-      pos = dragStartPos + (e.clientX - dragStartX);
-      const groupW = orig.offsetWidth;
-      if (groupW) {
-        while (pos > 0) pos -= groupW;
-        while (pos <= -groupW) pos += groupW;
-      }
-      track.style.transform = `translateX(${pos}px)`;
-    });
-
-    window.addEventListener('mouseup', () => {
-      if (!dragging) return;
-      dragging = false;
-      wrap.style.cursor = 'grab';
-    });
-
-    wrap.addEventListener('touchstart', e => {
-      dragging = true;
-      dragStartX = getX(e);
-      dragStartPos = pos;
-    }, { passive: true });
-
-    window.addEventListener('touchmove', e => {
-      if (!dragging) return;
-      pos = dragStartPos + (getX(e) - dragStartX);
-      const groupW = orig.offsetWidth;
-      if (groupW) {
-        while (pos > 0) pos -= groupW;
-        while (pos <= -groupW) pos += groupW;
-      }
-      track.style.transform = `translateX(${pos}px)`;
-    }, { passive: true });
-
-    window.addEventListener('touchend', () => {
-      if (!dragging) return;
-      dragging = false;
-    });
-
-    tick();
-  });
-
-  /* ---------- HERO PARTICLES ---------- */
-  (function() {
-    const canvas = document.getElementById('hero-particles');
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    let particles = [];
-    let animId;
-
-    function resize() {
-      const hero = document.getElementById('hero');
-      if (!hero) return;
-      canvas.width = hero.offsetWidth;
-      canvas.height = hero.offsetHeight;
-    }
-
-    const COLORS = ['#367a85', '#4aa3b3', '#2ac3c3', '#367a85'];
-
-    class Particle {
-      constructor() { this.reset(); }
-      reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = canvas.height + Math.random() * 60;
-        this.radius = 1 + Math.random() * 2;
-        this.vx = (Math.random() - 0.5) * 0.3;
-        this.vy = -(0.15 + Math.random() * 0.35);
-        this.opacity = 0.15 + Math.random() * 0.35;
-        this.color = COLORS[Math.floor(Math.random() * COLORS.length)];
-        this.wobble = Math.random() * Math.PI * 2;
-        this.wobbleSpeed = 0.005 + Math.random() * 0.01;
-        this.wobbleAmp = 0.2 + Math.random() * 0.4;
-      }
-      update() {
-        this.wobble += this.wobbleSpeed;
-        this.x += this.vx + Math.sin(this.wobble) * this.wobbleAmp;
-        this.y += this.vy;
-        if (this.y < -20 || this.x < -20 || this.x > canvas.width + 20) this.reset();
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.globalAlpha = this.opacity;
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-    }
-
-    function init() {
-      resize();
-      particles = [];
-      const count = Math.min(80, Math.floor(canvas.width * 0.08));
-      for (let i = 0; i < count; i++) {
-        const p = new Particle();
-        p.y = Math.random() * canvas.height;
-        particles.push(p);
-      }
-    }
-
-    function frame() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => { p.update(); p.draw(); });
-      animId = requestAnimationFrame(frame);
-    }
-
-    init();
-    frame();
-
-    window.addEventListener('resize', () => { resize(); });
-  })();
-
-  document.getElementById('mouseHole')?.addEventListener('click', function() {
-    const bubble = document.getElementById('speechBubble');
-    if (bubble) {
-      bubble.classList.toggle('show');
-      if (bubble.classList.contains('show')) {
-        setTimeout(() => bubble.classList.remove('show'), 4000);
-      }
-    }
-  });
-
-  (function() {
-    const eyes = document.querySelector('.mouse-eyes');
-    if (!eyes) return;
-    function showRandom() {
-      eyes.style.opacity = '1';
-      const stay = 1000 + Math.random() * 4000;
-      setTimeout(() => {
-        eyes.style.opacity = '0';
-        const next = 1000 + Math.random() * 19000;
-        setTimeout(showRandom, next);
-      }, stay);
-    }
-    setTimeout(showRandom, 1000 + Math.random() * 19000);
-  })();
-</script>
+<script src="assets/js/script.js"></script>
 </body>
 </html>
